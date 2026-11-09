@@ -1,0 +1,690 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BookCycle — Give Books a Second Life</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --green:#245b49;
+  --green2:#39765f;
+  --mint:#e8f1eb;
+  --bg:#f7f8f5;
+  --text:#26382f;
+  --muted:#829087;
+  --border:#e6ebe6;
+  --white:#fff;
+  --gold:#c99b51;
+  --shadow:0 12px 32px rgba(38,68,52,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+header{
+  height:75px;background:white;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 7%;position:sticky;top:0;z-index:10;
+}
+.logo{font-family:'Manrope',sans-serif;font-size:23px;font-weight:800;color:var(--green)}
+.logo span{color:var(--gold)}
+nav{display:flex;gap:27px}
+nav a{text-decoration:none;color:#68776d;font-size:13px;font-weight:600}
+nav a:hover{color:var(--green)}
+.header-btn,.primary-btn{
+  background:var(--green);color:white;border:0;border-radius:10px;
+  padding:12px 18px;font-size:12px;font-weight:700;
+}
+.header-btn:hover,.primary-btn:hover{background:var(--green2)}
+.container{max-width:1160px;margin:auto;padding:35px 25px 65px}
+.hero{
+  background:linear-gradient(115deg,#214e40,#477761);
+  color:white;border-radius:24px;padding:46px 48px;
+  min-height:260px;display:flex;align-items:center;
+  justify-content:space-between;position:relative;overflow:hidden;
+}
+.hero:after{
+  content:"";position:absolute;width:280px;height:280px;
+  border:1px solid rgba(255,255,255,.17);border-radius:50%;
+  right:9%;top:-75px;
+  box-shadow:0 0 0 35px rgba(255,255,255,.04),0 0 0 70px rgba(255,255,255,.025);
+}
+.hero-content{position:relative;z-index:1;max-width:590px}
+.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#d9e9dc;font-weight:700}
+.hero h1{font-family:'Manrope',sans-serif;font-size:40px;line-height:1.2;margin:15px 0}
+.hero p{font-size:14px;line-height:1.8;color:#e1eee5;max-width:460px}
+.hero .hero-button{
+  display:inline-block;margin-top:22px;padding:13px 19px;
+  background:white;color:var(--green);text-decoration:none;
+  border-radius:10px;font-size:12px;font-weight:800;
+}
+.hero-icon{font-size:94px;position:relative;z-index:1;margin-right:7%}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:15px;margin-top:22px;
+}
+.stat{
+  background:white;border:1px solid var(--border);
+  border-radius:15px;padding:19px;box-shadow:var(--shadow);
+}
+.stat-label{font-size:11px;color:var(--muted);font-weight:600}
+.stat-number{font-family:'Manrope',sans-serif;font-size:25px;font-weight:800;color:var(--green);margin-top:6px}
+.section-heading{
+  display:flex;align-items:end;justify-content:space-between;
+  margin:37px 0 18px;
+}
+.section-heading h2{font-family:'Manrope',sans-serif;font-size:21px}
+.section-heading p{font-size:12px;color:var(--muted);margin-top:5px}
+.listing-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{
+  background:white;border:1px solid var(--border);
+  border-radius:18px;padding:23px;box-shadow:var(--shadow);
+}
+.card-title{font-family:'Manrope',sans-serif;font-size:16px;font-weight:800}
+.card-subtitle{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.6}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:19px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field.full{grid-column:1/-1}
+.field label{font-size:11px;font-weight:700;color:#637169}
+.field input,.field select,.field textarea{
+  width:100%;padding:12px;border:1px solid var(--border);
+  background:#fafbf9;border-radius:9px;outline:none;
+  font-size:12px;color:var(--text);
+}
+.field textarea{resize:vertical;min-height:75px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green2)}
+.primary-btn{margin-top:17px}
+.message{
+  display:none;margin-top:13px;padding:12px;
+  background:var(--mint);color:var(--green);
+  border-radius:9px;font-size:12px;line-height:1.5;
+}
+.how-card{background:#f0f4ee;border-radius:15px;padding:19px;margin-top:18px}
+.how-card h3{font-family:'Manrope',sans-serif;font-size:13px;margin-bottom:12px}
+.how-step{display:flex;gap:11px;margin-top:12px;align-items:flex-start}
+.step-number{
+  background:white;color:var(--green);width:25px;height:25px;
+  border-radius:8px;display:grid;place-items:center;
+  font-size:11px;font-weight:800;flex-shrink:0;
+}
+.how-step p{font-size:11px;color:#647269;line-height:1.6}
+.toolbar{
+  display:flex;gap:10px;flex-wrap:wrap;
+  background:white;padding:15px;border:1px solid var(--border);
+  border-radius:14px;margin-bottom:18px;
+}
+.toolbar input,.toolbar select{
+  flex:1;min-width:160px;border:1px solid var(--border);
+  background:#fafbf9;border-radius:9px;padding:11px;
+  font-size:12px;outline:none;color:var(--text);
+}
+.book-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.book-card{
+  background:white;border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;box-shadow:var(--shadow);
+  transition:transform .2s;
+}
+.book-card:hover{transform:translateY(-4px)}
+.book-cover{
+  height:155px;background:linear-gradient(135deg,#e8efe7,#d9e7dc);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.book-cover:before{
+  content:"";position:absolute;width:100px;height:125px;
+  border-radius:4px;background:rgba(255,255,255,.35);
+  transform:rotate(-12deg);left:calc(50% - 50px);
+}
+.book-cover .book-emoji{font-size:54px;position:relative;z-index:1}
+.book-category{
+  position:absolute;top:12px;left:12px;
+  padding:6px 9px;border-radius:20px;
+  background:rgba(255,255,255,.9);font-size:9px;
+  font-weight:800;color:var(--green);z-index:2;
+}
+.book-info{padding:17px}
+.book-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;line-height:1.4}
+.book-author{font-size:11px;color:var(--muted);margin-top:5px}
+.book-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.tag{font-size:9px;padding:6px 8px;border-radius:20px;background:#f0f3ef;color:#637169;font-weight:700}
+.book-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid var(--border);margin-top:15px;padding-top:13px;
+}
+.book-price{font-family:'Manrope',sans-serif;font-size:17px;font-weight:800;color:var(--green)}
+.book-price small{font-size:10px;color:var(--muted);font-weight:500}
+.contact-btn{
+  border:0;background:var(--green);color:white;
+  padding:9px 12px;border-radius:8px;font-size:10px;font-weight:700;
+}
+.delete-btn{
+  border:0;background:#f8e9e6;color:#a45247;
+  padding:9px 10px;border-radius:8px;font-size:10px;font-weight:700;
+}
+.empty{
+  grid-column:1/-1;text-align:center;background:white;
+  padding:35px;border-radius:15px;border:1px dashed var(--border);
+  color:var(--muted);font-size:13px;
+}
+.impact{
+  margin-top:35px;background:#e9f0e8;border-radius:19px;
+  padding:27px;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;
+}
+.impact h3{font-family:'Manrope',sans-serif;font-size:17px}
+.impact p{font-size:12px;color:#647269;line-height:1.7;margin-top:7px;max-width:590px}
+.impact-icon{font-size:50px}
+footer{text-align:center;padding:24px;color:var(--muted);font-size:11px}
+@media(max-width:760px){
+  header{padding:0 5%;height:67px}
+  nav{display:none}
+  .container{padding:22px 15px 45px}
+  .hero{padding:32px 25px;min-height:220px}
+  .hero h1{font-size:29px}
+  .hero-icon{font-size:55px;margin-right:0}
+  .listing-layout{grid-template-columns:1fr}
+  .book-grid{grid-template-columns:1fr 1fr}
+  .stats{gap:8px}
+  .stat{padding:13px}
+  .stat-number{font-size:20px}
+  .impact{align-items:flex-start}
+}
+@media(max-width:430px){
+  .book-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .header-btn{padding:10px;font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">book<span>cycle.</span></div>
+  <nav>
+    <a href="#browse">Browse Books</a>
+    <a href="#list">List a Book</a>
+    <a href="#about">About</a>
+  </nav>
+  <button class="header-btn" onclick="document.getElementById('list').scrollIntoView({behavior:'smooth'})">
+    + List a book
+  </button>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">Read. Reuse. Repeat.</div>
+      <h1>Good books deserve<br>a second chapter.</h1>
+      <p>Buy, exchange, or pass on books within your campus community. Save money, share knowledge, and make learning more sustainable.</p>
+      <a href="#browse" class="hero-button">Explore available books ↗</a>
+    </div>
+    <div class="hero-icon">📚</div>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <div class="stat-label">Books listed</div>
+      <div class="stat-number" id="totalBooks">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Free books</div>
+      <div class="stat-number" id="freeBooks">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Books available</div>
+      <div class="stat-number" id="availableBooks">0</div>
+    </div>
+  </section>
+
+  <div class="section-heading" id="list">
+    <div>
+      <h2>Give your book a new home</h2>
+      <p>Have books you no longer use? List them for another student.</p>
+    </div>
+  </div>
+
+  <section class="listing-layout">
+    <div class="card">
+      <div class="card-title">Create a book listing</div>
+      <div class="card-subtitle">Share a few details to help other students find your book.</div>
+
+      <form id="bookForm">
+        <div class="form-grid">
+          <div class="field full">
+            <label for="title">Book title *</label>
+            <input id="title" required maxlength="70" placeholder="e.g. Engineering Mathematics">
+          </div>
+
+          <div class="field">
+            <label for="author">Author *</label>
+            <input id="author" required maxlength="50" placeholder="Author name">
+          </div>
+
+          <div class="field">
+            <label for="category">Subject/category *</label>
+            <select id="category" required>
+              <option value="">Select category</option>
+              <option>Engineering</option>
+              <option>Computer Science</option>
+              <option>Mathematics</option>
+              <option>Science</option>
+              <option>Business</option>
+              <option>Literature</option>
+              <option>Competitive Exams</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="condition">Book condition *</label>
+            <select id="condition" required>
+              <option value="">Select condition</option>
+              <option>Like New</option>
+              <option>Very Good</option>
+              <option>Good</option>
+              <option>Acceptable</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="type">Listing type *</label>
+            <select id="type" required>
+              <option value="">Select type</option>
+              <option>For Sale</option>
+              <option>Exchange</option>
+              <option>Free</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="price">Price (₹)</label>
+            <input id="price" type="number" min="0" max="100000" placeholder="Enter 0 if free">
+          </div>
+
+          <div class="field">
+            <label for="seller">Your name *</label>
+            <input id="seller" required maxlength="40" placeholder="Your name">
+          </div>
+
+          <div class="field full">
+            <label for="contact">Contact email or phone *</label>
+            <input id="contact" required maxlength="100" placeholder="Your contact details">
+          </div>
+
+          <div class="field full">
+            <label for="description">Additional details</label>
+            <textarea id="description" maxlength="300" placeholder="Edition, highlights, notes, preferred exchange..."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="primary-btn">Publish book listing ↗</button>
+        <div class="message" id="formMessage"></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <div class="card-title">How BookCycle works</div>
+      <div class="card-subtitle">A simple way to make campus learning more affordable and sustainable.</div>
+
+      <div class="how-card">
+        <h3>Three simple steps</h3>
+        <div class="how-step">
+          <div class="step-number">01</div>
+          <p><strong>List your book.</strong><br>Add its title, condition, price and contact details.</p>
+        </div>
+        <div class="how-step">
+          <div class="step-number">02</div>
+          <p><strong>Explore listings.</strong><br>Search for textbooks and learning resources from other students.</p>
+        </div>
+        <div class="how-step">
+          <div class="step-number">03</div>
+          <p><strong>Connect directly.</strong><br>Contact the listed student to discuss the exchange or sale.</p>
+        </div>
+      </div>
+
+      <div class="how-card" style="background:#f8f1e5">
+        <h3>🌱 Why reuse books?</h3>
+        <div class="how-step">
+          <div class="step-number">✓</div>
+          <p>Reduce unnecessary paper consumption and waste.</p>
+        </div>
+        <div class="how-step">
+          <div class="step-number">✓</div>
+          <p>Make textbooks more affordable for students.</p>
+        </div>
+        <div class="how-step">
+          <div class="step-number">✓</div>
+          <p>Build a culture of sharing within the campus community.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-heading" id="browse">
+    <div>
+      <h2>Explore the bookshelf</h2>
+      <p>Find your next useful read from the campus community.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Search title, author or subject...">
+
+      <select id="filterCategory">
+        <option value="All">All categories</option>
+        <option>Engineering</option>
+        <option>Computer Science</option>
+        <option>Mathematics</option>
+        <option>Science</option>
+        <option>Business</option>
+        <option>Literature</option>
+        <option>Competitive Exams</option>
+        <option>Other</option>
+      </select>
+
+      <select id="filterType">
+        <option value="All">All listing types</option>
+        <option>For Sale</option>
+        <option>Exchange</option>
+        <option>Free</option>
+      </select>
+    </div>
+
+    <div class="book-grid" id="bookGrid"></div>
+  </section>
+
+  <section class="impact" id="about">
+    <div>
+      <h3>One book. Many possibilities. 🌍</h3>
+      <p>BookCycle encourages students to reuse learning resources instead of letting useful books gather dust. Every shared book can make education a little more accessible and reduce unnecessary waste.</p>
+    </div>
+    <div class="impact-icon">🌱</div>
+  </section>
+
+  <div style="font-size:11px;color:#829087;margin-top:18px;line-height:1.7">
+    <strong>Important:</strong> This is a frontend demonstration. Listings are saved only in the browser that created them. They are not automatically visible to students using other devices. Verify books and meet in a safe public campus location before exchanging anything. Avoid sharing sensitive personal information.
+  </div>
+
+</main>
+
+<footer>
+  BookCycle © 2026 · Give books a second life.
+</footer>
+
+<script>
+// -------------------- LOCAL STORAGE --------------------
+const STORAGE_KEY = "bookcycle_listings";
+
+function loadBooks() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    return Array.isArray(saved) ? saved : [];
+  } catch {
+    return [];
+  }
+}
+
+let books = loadBooks();
+
+// Demo listings are shown when the browser has no saved listings.
+const demoBooks = [
+  {
+    id:"demo1",title:"Engineering Mathematics",
+    author:"B. S. Grewal",category:"Mathematics",
+    condition:"Very Good",type:"For Sale",price:350,
+    seller:"Aarav",contact:"aarav@example.com",
+    description:"A useful reference book with minor highlighting."
+  },
+  {
+    id:"demo2",title:"Introduction to Algorithms",
+    author:"Cormen et al.",category:"Computer Science",
+    condition:"Good",type:"Exchange",price:0,
+    seller:"Meera",contact:"meera@example.com",
+    description:"Looking to exchange for another computer science textbook."
+  },
+  {
+    id:"demo3",title:"Concepts of Physics",
+    author:"H. C. Verma",category:"Science",
+    condition:"Like New",type:"Free",price:0,
+    seller:"Ishaan",contact:"ishaan@example.com",
+    description:"Happy to pass this book on to another student."
+  },
+  {
+    id:"demo4",title:"Digital Design",
+    author:"M. Morris Mano",category:"Engineering",
+    condition:"Very Good",type:"For Sale",price:280,
+    seller:"Sana",contact:"sana@example.com",
+    description:"Good condition, useful for digital systems coursework."
+  },
+  {
+    id:"demo5",title:"The Alchemist",
+    author:"Paulo Coelho",category:"Literature",
+    condition:"Acceptable",type:"Free",price:0,
+    seller:"Riya",contact:"riya@example.com",
+    description:"A few folded pages, but the book is fully readable."
+  },
+  {
+    id:"demo6",title:"Operating System Concepts",
+    author:"Silberschatz",category:"Computer Science",
+    condition:"Good",type:"For Sale",price:400,
+    seller:"Kabir",contact:"kabir@example.com",
+    description:"Older edition, great for understanding OS fundamentals."
+  }
+];
+
+function persistBooks() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
+}
+
+// -------------------- DISPLAY BOOKS --------------------
+const bookEmojis = {
+  "Engineering":"⚙️",
+  "Computer Science":"💻",
+  "Mathematics":"📐",
+  "Science":"🔬",
+  "Business":"📊",
+  "Literature":"📖",
+  "Competitive Exams":"🎓",
+  "Other":"📚"
+};
+
+function formatPrice(book) {
+  if (book.type === "Free" || Number(book.price) === 0) {
+    return "Free";
+  }
+  return "₹" + Number(book.price).toLocaleString("en-IN");
+}
+
+function renderBooks() {
+  const grid = document.getElementById("bookGrid");
+  const search = document.getElementById("search").value.toLowerCase().trim();
+  const category = document.getElementById("filterCategory").value;
+  const type = document.getElementById("filterType").value;
+
+  // Show demo books until the user creates their first listing.
+  const allBooks = books.length ? books : demoBooks;
+
+  const filtered = allBooks.filter(book => {
+    const searchable = `${book.title} ${book.author} ${book.category}`.toLowerCase();
+    return searchable.includes(search)
+      && (category === "All" || book.category === category)
+      && (type === "All" || book.type === type);
+  });
+
+  document.getElementById("totalBooks").textContent = allBooks.length;
+  document.getElementById("freeBooks").textContent =
+    allBooks.filter(book => book.type === "Free").length;
+  document.getElementById("availableBooks").textContent = allBooks.length;
+
+  if (!filtered.length) {
+    grid.innerHTML = `
+      <div class="empty">
+        <div style="font-size:32px;margin-bottom:10px">📚</div>
+        No books match your search. Try another keyword or filter.
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(book => {
+    const isDemo = String(book.id).startsWith("demo");
+
+    return `
+      <article class="book-card">
+        <div class="book-cover">
+          <span class="book-category">${escapeHTML(book.category)}</span>
+          <span class="book-emoji">${bookEmojis[book.category] || "📚"}</span>
+        </div>
+
+        <div class="book-info">
+          <div class="book-title">${escapeHTML(book.title)}</div>
+          <div class="book-author">by ${escapeHTML(book.author)}</div>
+
+          <div class="book-tags">
+            <span class="tag">${escapeHTML(book.condition)}</span>
+            <span class="tag">${escapeHTML(book.type)}</span>
+          </div>
+
+          <p style="font-size:11px;color:#829087;line-height:1.6;margin-top:12px">
+            ${escapeHTML(book.description || "No additional details provided.")}
+          </p>
+
+          <div style="font-size:10px;color:#829087;margin-top:10px">
+            Listed by ${escapeHTML(book.seller)}
+          </div>
+
+          <div class="book-bottom">
+            <div class="book-price">${formatPrice(book)}</div>
+            <div style="display:flex;gap:6px">
+              <button class="contact-btn" onclick="contactSeller('${escapeHTML(String(book.id))}')">
+                Contact
+              </button>
+              ${!isDemo ? `
+                <button class="delete-btn" onclick="deleteBook('${escapeHTML(String(book.id))}')">
+                  Delete
+                </button>` : ""}
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+// -------------------- SAFE HTML --------------------
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[character]);
+}
+
+// -------------------- ADD A BOOK --------------------
+document.getElementById("bookForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const type = document.getElementById("type").value;
+  const rawPrice = document.getElementById("price").value;
+  const price = rawPrice === "" ? 0 : Number(rawPrice);
+
+  if (!Number.isFinite(price) || price < 0 || price > 100000) {
+    showMessage("Please enter a valid price between ₹0 and ₹1,00,000.");
+    return;
+  }
+
+  if (type === "For Sale" && rawPrice === "") {
+    showMessage("Please enter a price for a book listed for sale.");
+    return;
+  }
+
+  const book = {
+    id: "book_" + Date.now(),
+    title: document.getElementById("title").value.trim(),
+    author: document.getElementById("author").value.trim(),
+    category: document.getElementById("category").value,
+    condition: document.getElementById("condition").value,
+    type: type,
+    price: type === "Free" ? 0 : price,
+    seller: document.getElementById("seller").value.trim(),
+    contact: document.getElementById("contact").value.trim(),
+    description: document.getElementById("description").value.trim()
+  };
+
+  if (!book.title || !book.author || !book.seller || !book.contact) {
+    showMessage("Please complete all required fields.");
+    return;
+  }
+
+  books.unshift(book);
+  persistBooks();
+  renderBooks();
+
+  document.getElementById("bookForm").reset();
+  showMessage("Your book listing has been published successfully! 📚");
+
+  document.getElementById("browse").scrollIntoView({behavior:"smooth"});
+});
+
+function showMessage(message) {
+  const box = document.getElementById("formMessage");
+  box.textContent = message;
+  box.style.display = "block";
+}
+
+// -------------------- CONTACT SELLER --------------------
+function contactSeller(id) {
+  const book = books.find(item => String(item.id) === String(id));
+
+  if (!book) {
+    alert("This is a sample listing. Contact details are examples only.");
+    return;
+  }
+
+  const contact = book.contact.trim();
+
+  // Open email addresses in the user's email application.
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)) {
+    window.location.href =
+      "mailto:" + encodeURIComponent(contact) +
+      "?subject=" + encodeURIComponent("BookCycle enquiry: " + book.title);
+    return;
+  }
+
+  // Allow phone numbers with common international formatting.
+  const phone = contact.replace(/[^\d+]/g, "");
+  if (/^\+?\d{7,15}$/.test(phone)) {
+    window.location.href = "tel:" + phone;
+    return;
+  }
+
+  alert("Contact details: " + contact);
+}
+
+// -------------------- DELETE LISTING --------------------
+function deleteBook(id) {
+  const confirmed = confirm("Are you sure you want to delete this book listing?");
+  if (!confirmed) return;
+
+  books = books.filter(book => String(book.id) !== String(id));
+  persistBooks();
+  renderBooks();
+}
+
+// -------------------- SEARCH AND FILTERS --------------------
+document.getElementById("search").addEventListener("input", renderBooks);
+document.getElementById("filterCategory").addEventListener("change", renderBooks);
+document.getElementById("filterType").addEventListener("change", renderBooks);
+
+// First render
+renderBooks();
+</script>
+</body>
+</html>
